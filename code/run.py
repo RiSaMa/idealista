@@ -26,7 +26,7 @@ def main():
     '''
 
     # Reading the list of dictionaries from the JSON file
-    with open('./data.json', 'r') as json_file:
+    with open('./code/data.json', 'r') as json_file:
         all_properties = json.load(json_file)
     
 
