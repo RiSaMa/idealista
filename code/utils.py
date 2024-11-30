@@ -7,10 +7,11 @@ from openpyxl.worksheet.table import Table, TableStyleInfo
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Font, Alignment, numbers
 from openpyxl.worksheet.hyperlink import Hyperlink
+import os
 
-# Actual API key and secret
-api_key = 'c6iblg41yrl9z9m184sle7ptgdniksqk'
-secret = 'nvm2sQp5Txrg'
+# Idealista API key and secret
+api_key = os.getenv('IDEALISTA_API_KEY')
+secret = os.getenv('IDEALISTA_API_SECRET')
 
 def get_oauth_token():
     # URL encode the API key and secret

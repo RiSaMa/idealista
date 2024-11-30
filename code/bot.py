@@ -1,10 +1,11 @@
 import requests
+import os
 
 def get_bot_token():
-    return "7851996033:AAFPgP9udSDFCUGBOJQGo_DtkD--cy8QO1w"
+    return os.getenv('TELEGRAM_TOKEN')
 
 def get_chat_id():
-    return "451966009"
+    return "451966009" # Ricardo
 
 def send_telegram_message(bot_token, chat_id, message):
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
