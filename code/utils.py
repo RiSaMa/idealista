@@ -185,7 +185,7 @@ def update_database(new_properties, db_file='db.xlsx'):
     wb.save(db_file)
 
 
-def upload_to_dropbox(file_path, file_name='db.xlsx'):
+def upload_to_dropbox(file_path):
     # Connect to Dropbox
     dbx = dropbox.Dropbox(dropbox_token)
     
