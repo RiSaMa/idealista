@@ -1,20 +1,19 @@
+import os
 import base64
 import requests
 import pandas as pd
 import re
+import dropbox
 from openpyxl import load_workbook
 from openpyxl.worksheet.table import Table, TableStyleInfo
-from openpyxl.utils import get_column_letter
-from openpyxl.styles import Font, Alignment, numbers
-from openpyxl.worksheet.hyperlink import Hyperlink
-import os
+from openpyxl.styles import Alignment
 
-# TODO: verify should be True for higher security, but having problems on macos
-verify=True
+verify = True # when running in macos locally, it might have to be False due to some issue
 
 # Idealista API key and secret
 api_key = os.getenv('IDEALISTA_API_KEY')
 secret = os.getenv('IDEALISTA_API_SECRET')
+dropbox_access_token = os.getenv('DROPBOX_TOKEN')
 
 def get_oauth_token():
     # URL encode the API key and secret
@@ -184,3 +183,16 @@ def update_database(new_properties, db_file='db.xlsx'):
 
     # Save the formatted workbook to the original file
     wb.save(db_file)
+
+
+def upload_to_dropbox(file_path, file_name='db.xlsx'):
+    # Connect to Dropbox
+    dbx = dropbox.Dropbox(dropbox_access_token)
+
+    # Upload the file
+    with open(file_path, 'rb') as f:
+        dbx.files_upload(f.read(), '/' + file_name, mode=dropbox.files.WriteMode.overwrite)
+
+    # Create a shared link
+    shared_link_metadata = dbx.sharing_create_shared_link_with_settings('/' + file_name)
+    return shared_link_metadata.url

@@ -1,8 +1,7 @@
 import requests
 import os
 
-# TODO: verify should be True for higher security, but having problems on macos
-verify = True
+verify = False # in macos locally, I might have to use False or resolve the issue
 
 def get_bot_token():
     return os.getenv('TELEGRAM_TOKEN')

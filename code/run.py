@@ -1,10 +1,12 @@
-from utils import get_oauth_token, search_properties, filter_properties, update_database
+from utils import get_oauth_token, search_properties, filter_properties, update_database, upload_to_dropbox
 from bot import get_bot_token, get_chat_id, send_telegram_message
 from tqdm import tqdm
 import json
 
 def main():
 
+    #root_path = "/Users/sanchr87/Library/CloudStorage/OneDrive-MedtronicPLC/Documents/idealista/code"
+    root_path = "./code"
     since_date = "M" # M: last month, for initial search. W: last week for recurrent searches
     pages_to_search = (1, 1)  # Adjust the range as needed
 
@@ -26,18 +28,21 @@ def main():
     '''
 
     # Reading the list of dictionaries from the JSON file
-    with open('./code/data.json', 'r') as json_file:
+    #with open('./code/data.json', 'r') as json_file:
+    with open(f'{root_path}/data.json', 'r') as json_file:
         all_properties = json.load(json_file)
     
-
     # Filter properties
     filtered_properties = filter_properties(all_properties)
 
     # Update database
-    update_database(filtered_properties)
+    update_database(filtered_properties, db_file=f'{root_path}/db.xlsx')
+
+    # Upload file and get shareable link
+    shareable_link = upload_to_dropbox(f'{root_path}/db.xlsx')
 
     # Summary message
-    message = f"{len(filtered_properties)} new flats have been added to your DB."
+    message = f"{len(filtered_properties)} new flats have been added to your DB {shareable_link}"
 
     # Send Telegram message
     bot_token = get_bot_token()
