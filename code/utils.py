@@ -13,10 +13,7 @@ verify = True # when running in macos locally, it might have to be False due to 
 # Idealista API key and secret
 api_key = os.getenv('IDEALISTA_API_KEY')
 secret = os.getenv('IDEALISTA_API_SECRET')
-dropbox_access_token = os.getenv('DROPBOX_TOKEN')
-print(f'api_key: {api_key}')
-print(f'secret: {secret}')
-print(f'dropbox_access_token: {dropbox_access_token}')
+dropbox_token = os.getenv('DROPBOX_TOKEN')
 
 def get_oauth_token():
     # URL encode the API key and secret
@@ -190,8 +187,7 @@ def update_database(new_properties, db_file='db.xlsx'):
 
 def upload_to_dropbox(file_path, file_name='db.xlsx'):
     # Connect to Dropbox
-    print(f'DROPBOX TOKEN IS: {dropbox_access_token}')
-    dbx = dropbox.Dropbox(dropbox_access_token)
+    dbx = dropbox.Dropbox(dropbox_token)
     
     # Define the path where you want to upload the file in Dropbox
     dropbox_folder = '/Idealista'  # Ensure this folder exists in your Dropbox
