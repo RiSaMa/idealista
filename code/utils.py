@@ -187,6 +187,7 @@ def update_database(new_properties, db_file='db.xlsx'):
 
 def upload_to_dropbox(file_path, file_name='db.xlsx'):
     # Connect to Dropbox
+    print(f'DROPBOX TOKEN IS: {dropbox_access_token}')
     dbx = dropbox.Dropbox(dropbox_access_token)
 
     # Upload the file
