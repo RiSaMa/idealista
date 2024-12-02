@@ -42,10 +42,7 @@ def main():
     shareable_link = upload_to_dropbox(f'{root_path}/db.xlsx')
 
     # Summary message
-    message = f"Database updated! There are {len(filtered_properties)} new flats. [Link]({shareable_link})"
-
-    # Escape special characters for MarkdownV2
-    message = message.replace('-', '\\-').replace('.', '\\.').replace('(', '\\(').replace(')', '\\)')
+    message = f"Database updated! There are {len(filtered_properties)} new flats. Link: {shareable_link})"
 
     # Send Telegram message
     bot_token = get_bot_token()
