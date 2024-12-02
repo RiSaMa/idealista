@@ -14,6 +14,9 @@ verify = True # when running in macos locally, it might have to be False due to 
 api_key = os.getenv('IDEALISTA_API_KEY')
 secret = os.getenv('IDEALISTA_API_SECRET')
 dropbox_access_token = os.getenv('DROPBOX_TOKEN')
+print(f'api_key: {api_key}')
+print(f'secret: {secret}')
+print(f'dropbox_access_token: {dropbox_access_token}')
 
 def get_oauth_token():
     # URL encode the API key and secret
