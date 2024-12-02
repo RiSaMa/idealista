@@ -9,6 +9,9 @@ from openpyxl.styles import Font, Alignment, numbers
 from openpyxl.worksheet.hyperlink import Hyperlink
 import os
 
+# TODO: verify should be True for higher security, but having problems on macos
+verify=True
+
 # Idealista API key and secret
 api_key = os.getenv('IDEALISTA_API_KEY')
 secret = os.getenv('IDEALISTA_API_SECRET')
@@ -33,7 +36,7 @@ def get_oauth_token():
     }
     
     # Make the POST request to get the token
-    response = requests.post('https://api.idealista.com/oauth/token', headers=headers, data=data, verify=False)
+    response = requests.post('https://api.idealista.com/oauth/token', headers=headers, data=data, verify=verify)
     
     # Check if the request was successful
     if response.status_code == 200:
@@ -75,7 +78,7 @@ def search_properties(token, page_num, since_date):
     }
 
     # Make the API request
-    response = requests.post(url, headers=headers, data=params, verify=False)
+    response = requests.post(url, headers=headers, data=params, verify=verify)
 
     # Check if the request was successful
     if response.status_code == 200:

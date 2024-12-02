@@ -1,6 +1,9 @@
 import requests
 import os
 
+# TODO: verify should be True for higher security, but having problems on macos
+verify = True
+
 def get_bot_token():
     return os.getenv('TELEGRAM_TOKEN')
 
@@ -13,7 +16,7 @@ def send_telegram_message(bot_token, chat_id, message):
         "chat_id": chat_id,
         "text": message
     }
-    response = requests.post(url, data=payload, verify=False)
+    response = requests.post(url, data=payload, verify=verify)
 
     if response.status_code == 200:
         print("Telegram message sent successfully.")
