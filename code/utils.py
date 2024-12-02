@@ -192,11 +192,15 @@ def upload_to_dropbox(file_path, file_name='db.xlsx'):
     # Connect to Dropbox
     print(f'DROPBOX TOKEN IS: {dropbox_access_token}')
     dbx = dropbox.Dropbox(dropbox_access_token)
+    
+    # Define the path where you want to upload the file in Dropbox
+    dropbox_folder = '/Idealista'  # Ensure this folder exists in your Dropbox
+    dropbox_file_path = f'{dropbox_folder}/{os.path.basename(file_path)}'
 
     # Upload the file
     with open(file_path, 'rb') as f:
-        dbx.files_upload(f.read(), '/' + file_name, mode=dropbox.files.WriteMode.overwrite)
+        dbx.files_upload(f.read(), dropbox_file_path, mode=dropbox.files.WriteMode.overwrite)
 
     # Create a shared link
-    shared_link_metadata = dbx.sharing_create_shared_link_with_settings('/' + file_name)
+    shared_link_metadata = dbx.sharing_create_shared_link_with_settings(dropbox_file_path)
     return shared_link_metadata.url
