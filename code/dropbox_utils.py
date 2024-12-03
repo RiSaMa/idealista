@@ -5,8 +5,16 @@ import pandas as pd
 # Get secrets
 dropbox_token = os.getenv('DROPBOX_TOKEN')
 
+def get_dropbox_client():
+    dbx = dropbox.Dropbox(
+        app_key=os.getenv('DROPBOX_KEY'),
+        app_secret=os.getenv('DROPBOX_SECRET'),
+        oauth2_refresh_token=os.getenv('DROPBOX_TOKEN')
+    )
+    return dbx
+
 def upload_to_dropbox(file_path):
-    dbx = dropbox.Dropbox(dropbox_token)
+    dbx = get_dropbox_client()
     
     # Define the path where you want to upload the file in Dropbox
     dropbox_folder = '/Idealista'  # Ensure this folder exists in your Dropbox
@@ -32,7 +40,7 @@ def upload_to_dropbox(file_path):
 
 def download_from_dropbox(file_path, local_path):
     """Download a file from Dropbox, or create an empty file if it doesn't exist."""
-    dbx = dropbox.Dropbox(dropbox_token)
+    dbx = get_dropbox_client()
     
     try:
         # Attempt to download the file

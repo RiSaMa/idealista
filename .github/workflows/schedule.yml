@@ -28,5 +28,7 @@ jobs:
         IDEALISTA_API_KEY: ${{ secrets.IDEALISTA_API_KEY }}
         IDEALISTA_API_SECRET: ${{ secrets.IDEALISTA_API_SECRET }}
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}        
+        DROPBOX_KEY: ${{ secrets.DROPBOX_KEY }}
+        DROPBOX_SECRET: ${{ secrets.DROPBOX_SECRET }}
         DROPBOX_TOKEN: ${{ secrets.DROPBOX_TOKEN }}
       run: python ./code/run.py
