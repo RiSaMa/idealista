@@ -2,14 +2,12 @@ import os
 import dropbox
 import pandas as pd 
 
-# Get secrets
-dropbox_token = os.getenv('DROPBOX_TOKEN')
-
 def get_dropbox_client():
     dbx = dropbox.Dropbox(
-        app_key=os.getenv('DROPBOX_KEY'),
-        app_secret=os.getenv('DROPBOX_SECRET'),
-        oauth2_refresh_token=os.getenv('DROPBOX_TOKEN')
+        os.getenv('DROPBOX_TOKEN')
+        #app_key=os.getenv('DROPBOX_KEY'),
+        #app_secret=os.getenv('DROPBOX_SECRET'),
+        #oauth2_refresh_token=os.getenv('DROPBOX_TOKEN')
     )
     return dbx
 
