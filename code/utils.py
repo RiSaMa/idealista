@@ -49,7 +49,7 @@ def search_properties(page_num, since_date):
 
     # Get the OAuth token
     token = get_oauth_token()
-    
+
     # Define the endpoint URL
     url = "https://api.idealista.com/3.5/es/search"
 
@@ -184,5 +184,5 @@ def update_database(new_properties, local_file_path):
         ws.column_dimensions[column].width = width
 
     # Save the formatted workbook to the original file
-    wb.save(db_file)
+    wb.save(local_file_path)
 
