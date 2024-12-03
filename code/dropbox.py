@@ -5,7 +5,6 @@ import os
 dropbox_token = os.getenv('DROPBOX_TOKEN')
 
 def upload_to_dropbox(file_path):
-    # Connect to Dropbox
     dbx = dropbox.Dropbox(dropbox_token)
     
     # Define the path where you want to upload the file in Dropbox
@@ -31,9 +30,7 @@ def upload_to_dropbox(file_path):
         return None
 
 def download_from_dropbox(file_path, local_path):
-    """Download a file from Dropbox."""
     dbx = dropbox.Dropbox(dropbox_token)
-    
     try:
         # Download the file
         with open(local_path, "wb") as f:
