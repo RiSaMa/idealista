@@ -38,13 +38,16 @@ def main():
     filtered_properties = filter_properties(all_properties)
 
     # Update database
-    update_database(filtered_properties, local_file_path)
+    number_new_flats = update_database(filtered_properties, local_file_path)
 
     # Upload database to Dropbox
     shareable_link = upload_to_dropbox(local_file_path)
 
     # Summary message
-    message = f"Database updated! There are {len(filtered_properties)} new flats. Link: {shareable_link}"
+    if number_new_flats>0:
+        message = f"Database updated! There are {len(filtered_properties)} new flats. Link: {shareable_link}"
+    else:
+        message = f"No new flats. Link: {shareable_link}"
 
     # Send Telegram message
     bot_token = get_bot_token()

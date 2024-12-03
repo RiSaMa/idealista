@@ -142,9 +142,10 @@ def update_database(new_properties, local_file_path):
     # Merge new properties with existing database
     df_updated = pd.concat([df_existing, df_new], ignore_index=True).drop_duplicates(subset='propertyCode', keep='first')
 
-    # Save updated data to Excel (temporary file)
-    #temp_file = 'temp_db.xlsx'
+    # Save updated data to Excel
     df_updated.to_excel(local_file_path, index=False)
+
+    number_new_flats = len(df_updated)-len(df_existing)
 
     # Load the workbook with openpyxl
     wb = load_workbook(local_file_path)
@@ -189,4 +190,6 @@ def update_database(new_properties, local_file_path):
 
     # Save the formatted workbook to the original file
     wb.save(local_file_path)
+
+    return number_new_flats
 
