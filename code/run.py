@@ -1,6 +1,6 @@
 from utils import get_oauth_token, search_properties, filter_properties, update_database
 from bot import get_bot_token, get_chat_id, send_telegram_message
-from dropbox import upload_to_dropbox, download_from_dropbox
+from dropbox_utils import upload_to_dropbox, download_from_dropbox
 from tqdm import tqdm
 import json
 
