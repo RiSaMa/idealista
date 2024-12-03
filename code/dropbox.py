@@ -1,5 +1,6 @@
-import dropbox
 import os
+import dropbox
+import pandas as pd 
 
 # Get secrets
 dropbox_token = os.getenv('DROPBOX_TOKEN')
@@ -30,13 +31,21 @@ def upload_to_dropbox(file_path):
         return None
 
 def download_from_dropbox(file_path, local_path):
+    """Download a file from Dropbox, or create an empty file if it doesn't exist."""
     dbx = dropbox.Dropbox(dropbox_token)
+    
     try:
-        # Download the file
+        # Attempt to download the file
         with open(local_path, "wb") as f:
             metadata, res = dbx.files_download(path=file_path)
             f.write(res.content)
         print(f"File {file_path} downloaded successfully.")
     except dropbox.exceptions.ApiError as e:
         print(f"Dropbox API error: {e}")
-        return None
+        if isinstance(e.error, dropbox.files.DownloadError):
+            # If the file does not exist, create an empty DataFrame and save it as Excel
+            df_empty = pd.DataFrame(columns=['propertyCode', 'url', 'price', 'size', 'address', 'bedrooms', 'floor', 'description', 'Interested?', 'Contacted?'])
+            df_empty.to_excel(local_path, index=False)
+            print(f"Created an empty database at {local_path}.")
+        else:
+            return None

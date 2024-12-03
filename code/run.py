@@ -14,14 +14,14 @@ def main():
     since_date = "M" # M: last month, for initial search. W: last week for recurrent searches
     pages_to_search = (1, 1)  # Adjust the range as needed
 
-    # Get the OAuth token
-    token = get_oauth_token()
+    # Download existing database from Dropbox
+    download_from_dropbox(dropbox_file_path, local_file_path)
     
     '''
     # Search
     all_properties = []
     for page in tqdm(range(pages_to_search[0], pages_to_search[1] + 1)):
-        properties = search_properties(token, page, since_date)
+        properties = search_properties(page, since_date)
         all_properties.extend(properties)
 
     # DEBUG
@@ -37,11 +37,8 @@ def main():
     # Filter properties
     filtered_properties = filter_properties(all_properties)
 
-    # Download existing database from Dropbox
-    download_from_dropbox(dropbox_file_path, local_file_path)
-
     # Update database
-    update_database(filtered_properties, db_file=local_file_path)
+    update_database(filtered_properties, local_file_path)
 
     # Upload database to Dropbox
     shareable_link = upload_to_dropbox(local_file_path)

@@ -45,7 +45,11 @@ def get_oauth_token():
         print(f"Error: {response.status_code} - {response.text}")
         return None
 
-def search_properties(token, page_num, since_date):
+def search_properties(page_num, since_date):
+
+    # Get the OAuth token
+    token = get_oauth_token()
+    
     # Define the endpoint URL
     url = "https://api.idealista.com/3.5/es/search"
 
@@ -120,10 +124,10 @@ def filter_properties(properties):
     return filtered_properties
 
 
-def update_database(new_properties, db_file='db.xlsx'):
+def update_database(new_properties, local_file_path):
     # Load existing data with pandas
     try:
-        df_existing = pd.read_excel(db_file)
+        df_existing = pd.read_excel(local_file_path)
     except FileNotFoundError:
         # Create an empty DataFrame if the file doesn't exist
         df_existing = pd.DataFrame(columns=['propertyCode', 'url', 'price', 'size', 'address', 'bedrooms', 'floor', 'description', 'Interested?', 'Contacted?'])
