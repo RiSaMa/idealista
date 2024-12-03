@@ -135,15 +135,19 @@ def update_database(new_properties, local_file_path):
     # Convert new properties to DataFrame
     df_new = pd.DataFrame(new_properties)
 
+    # Ensure 'propertyCode' is of the same type in both DataFrames
+    df_existing['propertyCode'] = df_existing['propertyCode'].astype(str)
+    df_new['propertyCode'] = df_new['propertyCode'].astype(str)
+
     # Merge new properties with existing database
-    df_updated = pd.concat([df_existing, df_new]).drop_duplicates(subset='propertyCode', keep='first')
+    df_updated = pd.concat([df_existing, df_new], ignore_index=True).drop_duplicates(subset='propertyCode', keep='first')
 
     # Save updated data to Excel (temporary file)
-    temp_file = 'temp_db.xlsx'
-    df_updated.to_excel(temp_file, index=False)
+    #temp_file = 'temp_db.xlsx'
+    df_updated.to_excel(local_file_path, index=False)
 
     # Load the workbook with openpyxl
-    wb = load_workbook(temp_file)
+    wb = load_workbook(local_file_path)
     ws = wb.active
 
     # Format the range as a table
