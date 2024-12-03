@@ -3,17 +3,15 @@ import base64
 import requests
 import pandas as pd
 import re
-import dropbox
 from openpyxl import load_workbook
 from openpyxl.worksheet.table import Table, TableStyleInfo
 from openpyxl.styles import Alignment
 
 verify = True # when running in macos locally, it might have to be False due to some issue
 
-# Idealista API key and secret
+# Get secrets
 api_key = os.getenv('IDEALISTA_API_KEY')
 secret = os.getenv('IDEALISTA_API_SECRET')
-dropbox_token = os.getenv('DROPBOX_TOKEN')
 
 def get_oauth_token():
     # URL encode the API key and secret
@@ -184,29 +182,3 @@ def update_database(new_properties, db_file='db.xlsx'):
     # Save the formatted workbook to the original file
     wb.save(db_file)
 
-
-def upload_to_dropbox(file_path):
-    # Connect to Dropbox
-    dbx = dropbox.Dropbox(dropbox_token)
-    
-    # Define the path where you want to upload the file in Dropbox
-    dropbox_folder = '/Idealista'  # Ensure this folder exists in your Dropbox
-    dropbox_file_path = f'{dropbox_folder}/{os.path.basename(file_path)}'
-
-    # Upload the file
-    with open(file_path, 'rb') as f:
-        dbx.files_upload(f.read(), dropbox_file_path, mode=dropbox.files.WriteMode.overwrite)
-
-    try:
-        # Check if a shared link already exists
-        shared_links = dbx.sharing_list_shared_links(path=dropbox_file_path, direct_only=True)
-        if shared_links.links:
-            # Use the existing shared link
-            return shared_links.links[0].url
-        else:
-            # Create a new shared link if none exists
-            shared_link_metadata = dbx.sharing_create_shared_link_with_settings(dropbox_file_path)
-            return shared_link_metadata.url
-    except dropbox.exceptions.ApiError as e:
-        print(f"Dropbox API error: {e}")
-        return None
