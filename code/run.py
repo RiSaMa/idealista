@@ -45,7 +45,7 @@ def main():
 
     # Summary message
     if number_new_flats>0:
-        message = f"Database updated! There are {len(filtered_properties)} new flats. Link: {shareable_link}"
+        message = f"Database updated! There are {len(number_new_flats)} new flats. Link: {shareable_link}"
     else:
         message = f"No new flats. Link: {shareable_link}"
 

@@ -4,10 +4,10 @@ import pandas as pd
 
 def get_dropbox_client():
     dbx = dropbox.Dropbox(
-        os.getenv('DROPBOX_TOKEN')
-        #app_key=os.getenv('DROPBOX_KEY'),
-        #app_secret=os.getenv('DROPBOX_SECRET'),
-        #oauth2_refresh_token=os.getenv('DROPBOX_TOKEN')
+        #os.getenv('DROPBOX_TOKEN')
+        app_key=os.getenv('DROPBOX_APP_KEY'),
+        app_secret=os.getenv('DROPBOX_APP_SECRET'),
+        #oauth2_refresh_token=os.getenv('DROPBOX_REFRESH_TOKEN')
     )
     return dbx
 
