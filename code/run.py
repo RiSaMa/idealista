@@ -48,9 +48,11 @@ def main():
     # Send Telegram messages (if new flats)
     if number_new_flats>0:
         message = f"Database updated! There are {number_new_flats} new flats ({len(new_properties)-len(filtered_new_properties)} were filtered out). Link {gdrive_link}."
+        print(message)
         send_telegram_messages(message)
     else:
         message = f"No new flats."
+        print(message)
 
 
 if __name__ == "__main__":
