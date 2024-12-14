@@ -27,7 +27,7 @@ jobs:
       env:
         SERVICE_ACCOUNT_JSON_BASE64: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON_BASE64 }}
       run: |
-        echo "$SERVICE_ACCOUNT_JSON_BASE64" | base64 --decode > $HOME/service_account.json
+        echo "$SERVICE_ACCOUNT_JSON_BASE64" | base64 --decode > /home/runner/service_account.json
 
     - name: Run script
       env:
