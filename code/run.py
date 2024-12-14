@@ -1,6 +1,6 @@
 from utils import get_oauth_token, search_properties, filter_properties, update_database
 from bot import get_bot_token, get_chat_id, send_telegram_message
-from dropbox_utils import upload_to_dropbox, download_from_dropbox
+from gdrive_utils import download_from_google_sheets, upload_to_google_sheets
 from tqdm import tqdm
 import json
 
@@ -8,14 +8,15 @@ def main():
 
     root_path = "./code"
 
-    dropbox_file_path = '/Idealista/db.xlsx'
-    local_file_path = f'{root_path}/db.xlsx'
-
     since_date = "M" # M: last month, for initial search. W: last week for recurrent searches
     pages_to_search = (1, 1)  # Adjust the range as needed
 
-    # Download existing database from Dropbox
-    download_from_dropbox(dropbox_file_path, local_file_path)
+    gdrive_link = "https://docs.google.com/spreadsheets/d/1R5gFw0DfeP6-26EXVVIaL-u-3fTXsKrpLWCJVJ2yY2A/edit?usp=sharing"
+
+    # Download existing database from Google Sheets
+    spreadsheet_id = '1R5gFw0DfeP6-26EXVVIaL-u-3fTXsKrpLWCJVJ2yY2A'
+    sheet_name = 'Sheet1'
+    df_existing = download_from_google_sheets(spreadsheet_id, sheet_name)
     
     '''
     # Search
@@ -38,16 +39,18 @@ def main():
     filtered_properties = filter_properties(all_properties)
 
     # Update database
-    number_new_flats = update_database(filtered_properties, local_file_path)
+    df_updated = update_database(filtered_properties, df_existing)
 
-    # Upload database to Dropbox
-    shareable_link = upload_to_dropbox(local_file_path)
+    # Upload database to Google Sheets
+    upload_to_google_sheets(df_updated, spreadsheet_id, sheet_name)
+
+    number_new_flats = len(df_updated) - len(df_existing)
 
     # Summary message
     if number_new_flats>0:
-        message = f"Database updated! There are {len(number_new_flats)} new flats. Link: {shareable_link}"
+        message = f"Database updated! There are {len(number_new_flats)} new flats. Link {gdrive_link}."
     else:
-        message = f"No new flats. Link: {shareable_link}"
+        message = f"No new flats. Link {gdrive_link}."
 
     # Send Telegram message
     bot_token = get_bot_token()

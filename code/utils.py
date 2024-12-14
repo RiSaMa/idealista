@@ -3,9 +3,6 @@ import base64
 import requests
 import pandas as pd
 import re
-from openpyxl import load_workbook
-from openpyxl.worksheet.table import Table, TableStyleInfo
-from openpyxl.styles import Alignment
 
 verify = True # when running in macos locally, it might have to be False due to some issue
 
@@ -123,15 +120,7 @@ def filter_properties(properties):
 
     return filtered_properties
 
-
-def update_database(new_properties, local_file_path):
-    # Load existing data with pandas
-    try:
-        df_existing = pd.read_excel(local_file_path)
-    except FileNotFoundError:
-        # Create an empty DataFrame if the file doesn't exist
-        df_existing = pd.DataFrame(columns=['propertyCode', 'url', 'price', 'size', 'address', 'bedrooms', 'floor', 'description', 'Interested?', 'Contacted?'])
-
+def update_database(new_properties, df_existing):
     # Convert new properties to DataFrame
     df_new = pd.DataFrame(new_properties)
 
@@ -142,54 +131,4 @@ def update_database(new_properties, local_file_path):
     # Merge new properties with existing database
     df_updated = pd.concat([df_existing, df_new], ignore_index=True).drop_duplicates(subset='propertyCode', keep='first')
 
-    # Save updated data to Excel
-    df_updated.to_excel(local_file_path, index=False)
-
-    number_new_flats = len(df_updated)-len(df_existing)
-
-    # Load the workbook with openpyxl
-    wb = load_workbook(local_file_path)
-    ws = wb.active
-
-    # Format the range as a table
-    tab = Table(displayName="PropertiesTable", ref=ws.dimensions)
-    style = TableStyleInfo(name="TableStyleMedium9", showFirstColumn=False, showLastColumn=False, showRowStripes=True, showColumnStripes=True)
-    tab.tableStyleInfo = style
-    ws.add_table(tab)
-
-    # Make URLs clickable hyperlinks
-    for cell in ws['B'][1:]:  # Assuming 'B' is the URL column
-        cell.hyperlink = cell.value
-        cell.value = "Link"
-        cell.style = "Hyperlink"
-
-        
-    # Adjust column widths
-    for col in ws.columns:
-        column = col[0].column_letter  # Get the column name
-        if column in ['A', 'B', 'D', 'F', 'G']:
-            width = 10
-        elif column=='C':
-            # Apply euro currency format
-            for cell in col[1:]:  # Skip header
-                cell.number_format = '€#,##0'  # Custom format for euros without decimals
-        elif column == 'E':  # ADDRESS column
-            width = 30
-        elif column == 'H':  # Description column
-            width = 120
-            #for cell in col:
-            #    cell.alignment = Alignment(wrap_text=True)  # Wrap text in description cells
-        elif column in ['I', 'J']:
-            width = 15
-
-        # Apply vertical alignment to all cells
-        for cell in col:
-            cell.alignment = Alignment(wrap_text=True, vertical='center', horizontal='center')
-
-        ws.column_dimensions[column].width = width
-
-    # Save the formatted workbook to the original file
-    wb.save(local_file_path)
-
-    return number_new_flats
-
+    return df_updated
