@@ -6,8 +6,8 @@ import gspread
 # Set up the Google Sheets API
 def get_gspread_client():
     # Path to your service account key file
-    SERVICE_ACCOUNT_FILE = '/Users/sanchr87/Library/CloudStorage/OneDrive-MedtronicPLC/Documents/idealista/code/idealista-444711-aec4a5e9d3c1.json'
-    #SERVICE_ACCOUNT_FILE = os.getenv('GDRIVE_SERVICE_ACCOUNT')
+    #SERVICE_ACCOUNT_FILE = '/Users/sanchr87/Library/CloudStorage/OneDrive-MedtronicPLC/Documents/idealista/code/idealista-444711-aec4a5e9d3c1.json'
+    SERVICE_ACCOUNT_FILE = os.getenv('GDRIVE_SERVICE_ACCOUNT')
 
     # Define the scopes
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
