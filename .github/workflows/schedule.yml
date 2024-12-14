@@ -28,12 +28,11 @@ jobs:
         SERVICE_ACCOUNT_JSON_BASE64: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON_BASE64 }}
       run: |
         echo "$SERVICE_ACCOUNT_JSON_BASE64" | base64 --decode > $HOME/service_account.json
-        ls -l $HOME/service_account.json  # List to verify the file was created
 
     - name: Run script
       env:
         IDEALISTA_API_KEY: ${{ secrets.IDEALISTA_API_KEY }}
         IDEALISTA_API_SECRET: ${{ secrets.IDEALISTA_API_SECRET }}
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}        
-        GDRIVE_SERVICE_ACCOUNT: $HOME/service_account.json
+        GDRIVE_SERVICE_ACCOUNT: /home/runner/service_account.json
       run: python ./code/run.py
