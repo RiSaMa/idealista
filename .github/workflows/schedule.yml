@@ -2,7 +2,7 @@ name: Run Python Script
 
 on:
   schedule:
-    - cron: '0 18 */2 * *'  # Every two days at 18:00 UTC (19:00 BST)
+    - cron: '0 17 * * *'  # Every day at 17:00 UTC (18:00 UK BST)
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
