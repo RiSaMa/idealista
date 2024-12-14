@@ -61,7 +61,7 @@ def search_properties(page_num, since_date):
         "numPage": page_num,
         "maxPrice": 150001,
         "minPrice": 90000,
-        "sinceDate": since_date,  # M: last month, for initial search. W: last week for recurrent searches
+        "sinceDate": since_date,  # W:last week, M: last month, Y: last 2 days (sale and rooms)
         "order": "price",
         "sort": "asc",
         "bedrooms": "2",  # At least 2 bedrooms
@@ -89,7 +89,21 @@ def search_properties(page_num, since_date):
 
 def filter_properties(properties):
     # Words to filter out properties
-    exclude_keywords = ["nuda", "alquilado", "alquilada", "no se puede", "ocupado", "okupado", "subasta", "ilegal"]
+    exclude_keywords = [
+        "nuda",
+        "alquilado",
+        "alquilada",
+        "no se puede",
+        "ocupado",
+        "okupado",
+        "subasta",
+        "ilegal",
+        #
+        "abrantes",
+        "pan bendito",
+        "entrevias",
+        "san cristobal",
+        ]
     filtered_properties = []
 
     for property in properties:
@@ -114,7 +128,7 @@ def filter_properties(properties):
             'bedrooms': property.get('rooms', 'N/A'),
             'floor': property.get('floor', 'N/A'),
             'description': property.get('description', 'NA'),
-            'Interested?': '',  # Default empty --  needs manual check
+            'Interested?': '',  # Default empty
             'Contacted?': ''  # Default empty
         })
 

@@ -1,15 +1,18 @@
 import requests
 import os
 
-verify = False # in macos locally, I might have to use False or resolve the issue
+verify = True # in macos locally, I might have to use False or resolve the issue
 
 def get_bot_token():
     return os.getenv('TELEGRAM_TOKEN')
 
-def get_chat_id():
-    return "451966009" # Ricardo
+def get_chat_ids():
+    return [
+        "451966009", # Ricardo
+        "1602683666", # Eliska
+        ]
 
-def send_telegram_message(bot_token, chat_id, message):
+def send_telegram_message(message, bot_token, chat_id):
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     payload = {
         "chat_id": chat_id,
@@ -24,3 +27,9 @@ def send_telegram_message(bot_token, chat_id, message):
         print("Failed to send Telegram message.")
         print(f"Error: {response.status_code} - {response.text}")
         return
+
+def send_telegram_messages(message):
+    bot_token = get_bot_token()
+    for chat_id in get_chat_ids():
+        send_telegram_message(message, bot_token, chat_id)
+        
