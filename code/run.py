@@ -53,6 +53,7 @@ def main():
     else:
         message = f"No new flats."
         print(message)
+        send_telegram_messages(message)
 
 
 if __name__ == "__main__":
