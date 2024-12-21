@@ -21,6 +21,8 @@ def main():
     new_properties = []
     for page in tqdm(range(pages_to_search[0], pages_to_search[1] + 1)):
         properties = search_properties(page, since_date)
+        if len(properties)==0:
+            break
         new_properties.extend(properties)
     '''
     # DEBUG
@@ -38,22 +40,24 @@ def main():
     filtered_new_properties = filter_properties(new_properties)
 
     # Update database
-    df_updated = update_database(filtered_new_properties, df_existing)
+    if len(filtered_new_properties):
+        df_updated = update_database(filtered_new_properties, df_existing)
 
-    # Upload database to Google Sheets
-    upload_to_google_sheets(df_updated, spreadsheet_id, sheet_name)
+        # Upload database to Google Sheets
+        upload_to_google_sheets(df_updated, spreadsheet_id, sheet_name)
 
-    number_new_flats = len(df_updated) - len(df_existing)
+        number_new_flats = len(df_updated) - len(df_existing)
 
-    # Send Telegram messages (if new flats)
-    if number_new_flats>0:
-        message = f"Database updated! There are {number_new_flats} new flats ({len(new_properties)-len(filtered_new_properties)} were filtered out). Link {gdrive_link}."
-        print(message)
-        send_telegram_messages(message)
-    else:
-        message = f"No new flats."
-        print(message)
-        send_telegram_messages(message)
+        # Send Telegram messages (if new flats)
+        if number_new_flats>0:
+            message = f"Database updated! There are {number_new_flats} new flats ({len(new_properties)-len(filtered_new_properties)} were filtered out). Link {gdrive_link}."
+            print(message)
+            send_telegram_messages(message)
+            return
+        
+    message = f"No new flats."
+    print(message)
+    send_telegram_messages(message)
 
 
 if __name__ == "__main__":
