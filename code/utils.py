@@ -97,11 +97,13 @@ def filter_properties(properties):
         "okupado",
         "subasta",
         "ilegal",
+        "judicial",
         #
         "abrantes",
-        "pan bendito",
-        "entrevias",
-        "san cristobal",
+        "pan",
+        "bendito",
+        "entrev",
+        "cristobal",
         ]
     filtered_properties = []
 
