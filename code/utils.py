@@ -113,10 +113,6 @@ def filter_properties(properties):
         if 'description' not in property or any(re.search(keyword, property['description'], re.IGNORECASE) for keyword in exclude_keywords):
             continue
 
-        # Check if the property has at least 3 pictures
-        if property['numPhotos'] < 3:
-            continue
-        
         if "propertyCode" not in property or "url" not in property:
             continue
         
