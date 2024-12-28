@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from google.oauth2.service_account import Credentials
 import gspread
+from bot import send_telegram_messages
 
 # Set up the Google Sheets API
 def get_gspread_client():
@@ -37,15 +38,20 @@ def download_from_google_sheets(spreadsheet_id, sheet_name):
             
     except:
         df = create_empty_df()
+        send_telegram_messages(f'Error while using GDrive API. Continuing with empty dataframe.')
     return df
 
 def upload_to_google_sheets(df, spreadsheet_id, sheet_name):
-    # Use gspread to update the Google Sheet
-    client = get_gspread_client()
-    sheet = client.open_by_key(spreadsheet_id).worksheet(sheet_name)
+    try:
+        # Use gspread to update the Google Sheet
+        client = get_gspread_client()
+        sheet = client.open_by_key(spreadsheet_id).worksheet(sheet_name)
 
-    # Clear existing data
-    sheet.clear()
+        # Clear existing data
+        sheet.clear()
 
-    # Update with new data
-    sheet.update([df.columns.values.tolist()] + df.values.tolist())
+        # Update with new data
+        sheet.update([df.columns.values.tolist()] + df.values.tolist())
+    except:
+        send_telegram_messages('Error while uploading to GDrive. Aborting.')
+        raise ValueError('Error while uploading to GDrive. Aborting.')

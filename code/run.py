@@ -5,10 +5,8 @@ from tqdm import tqdm
 
 def main():
 
-    #root_path = "./code"
-
     since_date = "Y" # W:last week, M: last month, Y: last 2 days (sale and rooms)
-    pages_to_search = (1, 10)  # Adjust the range as needed
+    pages_to_search = (1, 3)  # Adjust the range as needed
 
     gdrive_link = "https://docs.google.com/spreadsheets/d/1R5gFw0DfeP6-26EXVVIaL-u-3fTXsKrpLWCJVJ2yY2A/edit?usp=sharing"
 
@@ -24,17 +22,6 @@ def main():
         if len(properties)==0:
             break
         new_properties.extend(properties)
-    '''
-    # DEBUG
-    # Saving the list of dictionaries to a JSON file
-    with open('./data.json', 'w') as json_file:
-        json.dump(all_properties, json_file, indent=4)
-    
-
-    # Reading the list of dictionaries from the JSON file
-    with open(f'{root_path}/data.json', 'r') as json_file:  # DEBUG
-        all_properties = json.load(json_file)
-    '''
     
     # Filter properties
     filtered_new_properties = filter_properties(new_properties)
@@ -55,10 +42,8 @@ def main():
             send_telegram_messages(message)
             return
         
-    message = f"No new flats."
-    print(message)
+    message = "No new flats."
     send_telegram_messages(message)
-
 
 if __name__ == "__main__":
     main()

@@ -3,6 +3,7 @@ import base64
 import requests
 import pandas as pd
 import re
+from bot import send_telegram_messages
 
 verify = True # when running in macos locally, it might have to be False due to some issue
 
@@ -80,12 +81,10 @@ def search_properties(page_num, since_date):
 
     # Check if the request was successful
     if response.status_code == 200:
-        # Parse and return the JSON response
         return response.json().get('elementList', [])
     else:
-        # Print the error and return an empty list
-        print(f"Error: {response.status_code} - {response.text}")
-        return []
+        send_telegram_messages(f'Error while using Idealista API.')
+        raise ValueError(f"Error: {response.status_code} - {response.text}")
 
 def filter_properties(properties):
     # Words to filter out properties

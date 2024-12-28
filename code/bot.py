@@ -22,13 +22,13 @@ def send_telegram_message(message, bot_token, chat_id):
 
     if response.status_code == 200:
         print("Telegram message sent successfully.")
-        return
     else:
-        print("Failed to send Telegram message.")
+        print("Error sending Telegram message.")
         print(f"Error: {response.status_code} - {response.text}")
-        return
+    return
 
 def send_telegram_messages(message):
+    print(f'Sending telegram message: {message}')
     bot_token = get_bot_token()
     for chat_id in get_chat_ids():
         send_telegram_message(message, bot_token, chat_id)
