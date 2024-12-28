@@ -104,6 +104,7 @@ def filter_properties(properties):
         "bendito",
         "entrev",
         "cristobal",
+        "palomeras",
         ]
     filtered_properties = []
 
